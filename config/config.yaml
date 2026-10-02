@@ -1,0 +1,23 @@
+# Runtime parameters — loaded by the platform registry and passed as
+# Graph(config=...). Separate from config/agent.yaml (the static manifest).
+#
+# The standalone entry point (src/api/server.py) reads this same file through
+# src.graph.graph.runtime_config(), so a value declared here is live in both
+# deployments. Every value below is shape- and range-checked before it is
+# forwarded; a malformed entry is dropped and the code keeps its documented
+# default rather than running on a nonsense threshold.
+
+max_retry: 3
+timeout_s: 30
+
+# Regulatory validation thresholds applied by ValidationMetricsNode. Each is a
+# finite number inside the range shown; anything else is ignored.
+fsa_thresholds:
+  # Minimum acceptable annualised Sharpe ratio            (range -100 .. 100)
+  fsa_chk01_min_sharpe: 0.5
+  # Maximum acceptable peak-to-trough drawdown, per cent  (range 0 .. 100)
+  fsa_chk02_max_drawdown_pct: 30.0
+  # Minimum backtest window, whole months                 (range 0 .. 600)
+  fsa_chk03_min_backtest_months: 24
+  # Minimum out-of-sample window, whole months            (range 0 .. 600)
+  fsa_chk04_min_oos_months: 6
